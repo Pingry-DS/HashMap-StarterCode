@@ -1,3 +1,5 @@
+import java.util.Set;
+
 public interface Map<K, V> {
 
   /**
@@ -42,7 +44,7 @@ public interface Map<K, V> {
    * @param key The key to check for
    * @return Wehther the key is present in the map
    */
-  boolean containsKey(Object key);
+  public boolean containsKey(K key);
 
   /**
    * Returns a Set containing all the keys in the map
@@ -55,7 +57,7 @@ public interface Map<K, V> {
    * Extend this Map with given map.
    * @param m the Map of items to be added
    */
-  public void putAll(Map<? extends K, ? extends V> m)
+  public void putAll(Map<? extends K, ? extends V> m);
 
   /**
    * Tells the size of the current map
