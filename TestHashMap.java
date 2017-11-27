@@ -16,6 +16,8 @@ public class TestHashMap {
     f = new HashMap<>(4);
     f.put("hello", "world");
     f.put("what", "up");
+    f.put("null", null);
+    f.put(null, "null");
   }
 
   // Tests for put
@@ -30,22 +32,91 @@ public class TestHashMap {
     e.put(null, "null");
     assertEquals("null", e.get(null));
   }
-  // put with null value
-  // put with null key and value
 
-  // get key not in map
-  // get key in map
-  // get null key (in map)
-  // get null value
+  @Test
+  public void testPutNullValue(){
+    e.put("null", null);
+    assertEquals(null, e.get("null"));
+  }
 
-  // replace where key exists
-  // replace where key doesn't exist
-  // replace null key (not in map)
-  // No size change after replace
+  @Test
+  public void testPutNullKeyAndValue(){
+    e.put(null, null);
+    assertEquals(null, e.get(null));
+  }
 
-  // remove key not in map
-  // remove key in map
-  // remove null key (in map)
+
+  // Tests for get
+  @Test
+  public void testGetKeyInMap(){
+    assertEquals("world", f.get("hello"));
+  }
+
+  @Test
+  public void testGetKeyNotInMap(){
+    assertEquals(null, f.get("non-existant key"));
+  }
+
+  @Test
+  public void testGetNullKeyInMap(){
+    assertEquals("null", f.get(null));
+  }
+
+  @Test
+  public void testGetNullKeyNotInMap(){
+    assertEquals(null, e.get(null));
+  }
+
+  // Tests for replace
+  @Test
+  public void testReplaceKeyInMap(){
+    f.replace("hello", "newval");
+    assertEquals("newval", f.get("hello"));
+  }
+
+  @Test
+  public void testReplaceKeyNotInMap(){
+    assertFalse(e.replace("hello", "newval"));
+  }
+
+  @Test
+  public void testReplaceNullKeyInMap(){
+    f.replace(null, "newval");
+    assertEquals("newval", f.get(null));
+  }
+
+  @Test
+  public void testReplaceNullKeyNotInMap(){
+    assertFalse(e.replace(null, "newval"));
+  }
+
+  // Tests for remove
+  @Test
+  public void testRemoveKeyInMap1(){
+    f.remove("hello");
+    assertFalse(f.containsKey("hello"));
+  }
+
+  @Test
+  public void testRemoveKeyInMap2(){
+    assertEquals("world", f.remove("hello"));
+  }
+
+  @Test
+  public void testRemoveKeyNotInMap(){
+    assertEquals(null, e.remove("hello"));
+  }
+
+  @Test
+  public void testRemoveNullKeyInMap(){
+    assertEquals("null", f.remove(null));
+    assertFalse(f.containsKey(null));
+  }
+
+  @Test
+  public void testRemoveNullKeyNotInMap(){
+    assertEquals(null, e.remove(null));
+  }
 
   // containsKey true
   // containsKey false
