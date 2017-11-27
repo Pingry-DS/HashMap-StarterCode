@@ -8,7 +8,6 @@ public class TestHashMap {
 
   private HashMap<String, String> e; // an empty one
   private HashMap<String, String> f; // a filled one
-  //private HashMap<String, String> d; // a dummy one
 
   @Before
   public void setUp(){
@@ -25,24 +24,43 @@ public class TestHashMap {
   public void testNormalPut(){
     e.put("hello", "world");
     assertEquals("world", e.get("hello"));
+    assertEquals(1, e.size());
+  }
+
+  @Test
+  public void testDuplicatePut(){
+    int oldSize = f.size();
+    assertEquals("world", f.put("hello", "mars"));
+    assertEquals("mars", f.get("hello"));
+    assertEquals(oldSize, f.size());
   }
 
   @Test
   public void testPutNullKey(){
     e.put(null, "null");
     assertEquals("null", e.get(null));
+    assertEquals(1, e.size());
   }
 
   @Test
   public void testPutNullValue(){
     e.put("null", null);
     assertEquals(null, e.get("null"));
+    assertEquals(1, e.size());
   }
 
   @Test
   public void testPutNullKeyAndValue(){
     e.put(null, null);
     assertEquals(null, e.get(null));
+    assertEquals(1, e.size());
+  }
+
+
+  // Test for size
+  @Test
+  public void testInitialSizeIsZero(){
+    assertEquals(0, e.size());
   }
 
 
@@ -67,6 +85,7 @@ public class TestHashMap {
     assertEquals(null, e.get(null));
   }
 
+
   // Tests for replace
   @Test
   public void testReplaceKeyInMap(){
@@ -90,16 +109,12 @@ public class TestHashMap {
     assertFalse(e.replace(null, "newval"));
   }
 
+
   // Tests for remove
   @Test
   public void testRemoveKeyInMap1(){
-    f.remove("hello");
-    assertFalse(f.containsKey("hello"));
-  }
-
-  @Test
-  public void testRemoveKeyInMap2(){
     assertEquals("world", f.remove("hello"));
+    assertFalse(f.containsKey("hello"));
   }
 
   @Test
@@ -118,26 +133,95 @@ public class TestHashMap {
     assertEquals(null, e.remove(null));
   }
 
-  // containsKey true
-  // containsKey false
-  // containsKey null
 
-  // size increases when putting new key
-  // size does not grow when putting dupe key same value
-  // size does not grow when putting dupe key new value
-  // size is zero to start
+  // Tests for containsKey
+  @Test
+  public void testContainsKeyTrue(){
+    assertTrue(f.containsKey("hello"));
+  }
 
-  // isempty is true to start
-  // isempty is false after adding
-  // isempty is true after removing all
-  // isempty is false after removing some
+  @Test
+  public void testContainsKeyFalse(){
+    assertFalse(f.containsKey("non-existant key"));
+  }
 
-  // keySet for empty map
-  // keySet for non empty map
-  // keySet for map with null
+  @Test
+  public void testContainsNullKeyTrue(){
+    assertTrue(f.containsKey(null));
+  }
 
+  @Test
+  public void testContainsNullKeyFalse(){
+    assertFalse(e.containsKey(null));
+  }
+
+
+  // Tests for isEmpty
+  @Test
+  public void testInitiallyEmpty(){
+    assertTrue(e.isEmpty());
+  }
+
+  @Test
+  public void testNotEmptyAfterAdding(){
+    assertFalse(f.isEmpty());
+  }
+
+  @Test
+  public void testBecomesEmptyAfterRemovingPairs(){
+    e.put("hello", "world");
+    e.remove("hello");
+    assertTrue(e.isEmpty());
+  }
+
+  @Test
+  public void testNotEmptyAfterRemovingOnePair(){
+    e.put("hello", "world");
+    e.put("what", "up");
+    e.remove("hello");
+    assertFalse(e.isEmpty());
+  }
+
+  @Test
+  public void testNotEmptyAfterRemovingNonExistantKey(){
+    e.put("hello", "world");
+    e.remove("non-existant key");
+    assertFalse(e.isEmpty());
+  }
+
+  // Tests for growing the data structure
+  @Test
+  public void testHandlesThousandsOfElements(){
+    int times = 2000;
+
+    for (int i = 0; i < times; i++){
+      e.put("" + i, "duplicate values");
+    }
+
+    assertEquals(times, e.size());
+  }
+
+  // Tests for keySet
+  @Test
+  public void testEmptyKeySet(){
+    assertTrue(e.keySet().isEmpty());
+  }
+
+  @Test
+  public void testNonEmptyKeySet(){
+    assertFalse(f.keySet().isEmpty());
+  }
+
+
+  @Test
+  public void testKeySetContainsNull(){
+    assertTrue(f.keySet().contains(null));
+  }
+
+
+  // Tests for putAll
   // putAll with target empty
-  // putAll with m empty
+  // putAll with source empty
   // putAll with neither empty
   // putAll with both empty
 }
