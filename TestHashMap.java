@@ -212,7 +212,6 @@ public class TestHashMap {
     assertFalse(f.keySet().isEmpty());
   }
 
-
   @Test
   public void testKeySetContainsNull(){
     assertTrue(f.keySet().contains(null));
@@ -220,8 +219,31 @@ public class TestHashMap {
 
 
   // Tests for putAll
-  // putAll with target empty
-  // putAll with source empty
-  // putAll with neither empty
-  // putAll with both empty
+  @Test
+  public void testPutAllTargetEmpty(){
+    e.putAll(f);
+    assertTrue(e.keySet().equals(f.keySet()));
+  }
+
+  @Test
+  public void testPutAllSourceEmpty(){
+    f.putAll(e);
+    assertEqual(4, f.keySet().size());
+  }
+
+  @Test
+  public void testPutAllNoEmpty(){
+    e.put("hi", "wo");
+    e.put("who", "how");
+    e.put("null", null);
+    e.put(null, "null");
+    f.putAll(e);
+    assertEqual(6, f.size());
+  }
+
+  @Test
+  public void testPutAllBothEmpty(){
+    e.putAll(e);
+    assertTrue(e.keySet().isEmpty());
+  }
 }
